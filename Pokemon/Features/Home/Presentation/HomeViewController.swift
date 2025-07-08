@@ -55,7 +55,6 @@ final class HomeViewController: UIViewController {
 
                 switch result {
                 case .success:
-                    print(result)
                     MBProgressHUD.hide(for: view, animated: true)
                     root.pokemonCollectionView.reloadData()
                     
@@ -65,7 +64,11 @@ final class HomeViewController: UIViewController {
                     
                 case .failure(let errorMessage):
                     MBProgressHUD.hide(for: view, animated: true)
-                    print(errorMessage)
+                    
+                    let alert = UIAlertController(title: "Error", message: errorMessage, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default))
+                    present(alert, animated: true)
+                    
                 }
             })
             .disposed(by: disposeBag)

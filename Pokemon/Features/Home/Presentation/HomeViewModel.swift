@@ -25,6 +25,8 @@ final class HomeViewModel: ObservableObject {
     private let limit = 10
     private var isLoading = false
     private var allDataLoaded = false
+    
+    private let realmManager = RealmManager()
 
     init(fetchPokemonUseCase: FetchPokemonUseCaseProtocol) {
         self.fetchPokemonUseCase = fetchPokemonUseCase
@@ -32,8 +34,22 @@ final class HomeViewModel: ObservableObject {
 
     func fetchPokemons() {
         guard !isLoading, !allDataLoaded else { return }
+        
+        guard ConnectivityMonitor.shared.isConnected else {
+            self.pokemonResult.accept(.failure("No internet connection."))
+            return
+        }
+        
         isLoading = true
 
+        if offset == 0 {
+            let cachedPokemons = realmManager.fetchAllPokemons()
+            if !cachedPokemons.isEmpty {
+                self.pokemons = cachedPokemons
+                self.pokemonResult.accept(.success(cachedPokemons))
+            }
+        }
+        
         fetchPokemonUseCase
             .executeFetchPokemons(offset: offset)
             .asObservable()
@@ -80,8 +96,17 @@ final class HomeViewModel: ObservableObject {
                         self.allDataLoaded = true
                     }
 
+                    // save to realm and avoid duplicate items
+                    models.forEach {
+                       self.realmManager.savePokemon($0)
+                    }
+
+                    let newItems = models.filter { newItem in
+                       !self.pokemons.contains(where: { $0.name == newItem.name })
+                    }
+
                     self.offset += self.limit
-                    self.pokemons.append(contentsOf: models)
+                    self.pokemons.append(contentsOf: newItems)
                     self.pokemonResult.accept(.success(self.pokemons))
                     self.isLoading = false
                 },
@@ -95,10 +120,10 @@ final class HomeViewModel: ObservableObject {
 
     /// Called from the view to trigger pagination
     func loadMoreIfNeeded(currentIndex: Int) {
-        print(currentIndex, 123)
         let thresholdIndex = pokemons.count - 1
         if currentIndex >= thresholdIndex {
-            offset += limit
+//            offset += limit
+            print(offset, 123455)
             fetchPokemons()
         }
     }
