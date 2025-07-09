@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import UIKit
+import XLPagerTabStrip
 
 final class HomeInjection {
     static func provideHomeViewController() -> HomeViewController {
@@ -14,6 +16,6 @@ final class HomeInjection {
         let useCase = FetchPokemonUseCase(repository: repository)
         let viewModel = HomeViewModel(fetchPokemonUseCase: useCase)
         
-        return HomeViewController(viewModel: viewModel)
+        return HomeViewController(viewModel: viewModel, itemInfo: IndicatorInfo(title: "Home", image: UIImage(systemName: "house.fill")))
     }
 }

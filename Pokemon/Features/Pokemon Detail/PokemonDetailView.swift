@@ -18,7 +18,7 @@ final class PokemonDetailView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = .white
+        backgroundColor = .backgroundColor
         
         setupConstraints()
         setupViews()
@@ -47,12 +47,12 @@ final class PokemonDetailView: UIView {
     fileprivate func setupViews() {
         pokemonNameLbl.style {
             $0.font = .systemFont(ofSize: 24, weight: .bold)
-            $0.textColor = .black
+            $0.textColor = .textColor
         }
         
         abilitiesLbl.style {
             $0.font = .systemFont(ofSize: 16)
-            $0.textColor = .black
+            $0.textColor = .textColor
             $0.lineBreakMode = .byWordWrapping
             $0.numberOfLines = 0
         }
@@ -75,6 +75,7 @@ final class PokemonDetailView: UIView {
             contentView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
             contentView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             
             pokemonNameLbl.topAnchor.constraint(equalTo: contentView.topAnchor),
             pokemonNameLbl.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),

@@ -15,13 +15,16 @@ final class HomeViewController: UIViewController {
     private var viewModel: HomeViewModel
     
     lazy var root = HomeView()
+    private let itemInfo: IndicatorInfo
     
     private let disposeBag = DisposeBag()
     
-    public init(viewModel: HomeViewModel) {
+    public init(viewModel: HomeViewModel, itemInfo: IndicatorInfo) {
         self.viewModel = viewModel
+        self.itemInfo = itemInfo
         super.init(nibName: nil, bundle: nil)
     }
+    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -65,9 +68,7 @@ final class HomeViewController: UIViewController {
                 case .failure(let errorMessage):
                     MBProgressHUD.hide(for: view, animated: true)
                     
-                    let alert = UIAlertController(title: "Error", message: errorMessage, preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "OK", style: .default))
-                    present(alert, animated: true)
+                    showAlert("Error", message: errorMessage)
                     
                 }
             })
@@ -76,12 +77,12 @@ final class HomeViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: true)
+        navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: true)
+        navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
 }
@@ -163,7 +164,7 @@ extension HomeViewController: UITextFieldDelegate {
 
 extension HomeViewController: IndicatorInfoProvider {
     func indicatorInfo(for pagerTabStripController: PagerTabStripViewController) -> IndicatorInfo {
-        return IndicatorInfo(image: UIImage(systemName: "house"))
+        return IndicatorInfo(title: "HOME", image: UIImage(systemName: "house.circle.fill"))
     }
 }
 

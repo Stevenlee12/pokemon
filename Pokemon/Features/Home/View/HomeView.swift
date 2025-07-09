@@ -13,7 +13,7 @@ final class HomeView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .white
+        backgroundColor = .backgroundColor
         setupConstraints()
         setupViews()
     }
@@ -29,7 +29,7 @@ final class HomeView: UIView {
             $0.searchTextField.attributedPlaceholder = NSAttributedString(
                 string: "Search your pokemon here",
                 attributes: [
-                    .foregroundColor: UIColor.black.withAlphaComponent(0.7),
+                    .foregroundColor: UIColor.textColor?.withAlphaComponent(0.7) ?? .white,
                     .font: UIFont.systemFont(ofSize: 13)
                 ]
             )
@@ -37,10 +37,10 @@ final class HomeView: UIView {
             if let textField = $0.value(forKey: "searchField") as? UITextField,
                 let iconView = textField.leftView as? UIImageView {
                     
-                textField.textColor = .black
+                textField.textColor = .textColor
                 textField.font = UIFont.systemFont(ofSize: 13)
                 iconView.image = iconView.image?.withRenderingMode(.alwaysTemplate)
-                iconView.tintColor = .black
+                iconView.tintColor = .textColor
                 
             }
         }

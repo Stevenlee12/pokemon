@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SnapKit
 
 final class PokemonCell: UICollectionViewCell {
     
@@ -31,7 +30,7 @@ final class PokemonCell: UICollectionViewCell {
             guard let model else { return }
             
             pokemonImg.setImage(string: model.imageUrl?.url)
-            pokemonName.text = model.name
+            pokemonName.text = model.name.uppercased()
         }
     }
     
@@ -39,7 +38,7 @@ final class PokemonCell: UICollectionViewCell {
         contentView.style {
             $0.layer.cornerRadius = 16
             $0.clipsToBounds = true
-            $0.backgroundColor = .gray.withAlphaComponent(0.4)
+            $0.backgroundColor = .cardColor
         }
         
         pokemonImg.style {
@@ -48,10 +47,10 @@ final class PokemonCell: UICollectionViewCell {
         
         pokemonName.style {
             $0.text = "Pikachu"
-            $0.textColor = .black
+            $0.textColor = .textColor?.withAlphaComponent(0.8)
             $0.lineBreakMode = .byWordWrapping
             $0.numberOfLines = 0
-            $0.font = .systemFont(ofSize: 16, weight: .medium)
+            $0.font = .systemFont(ofSize: 14, weight: .semibold)
             $0.textAlignment = .center
         }
     }

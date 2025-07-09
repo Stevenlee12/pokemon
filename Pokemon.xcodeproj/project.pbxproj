@@ -11,9 +11,9 @@
 		365B8A342E1D189B00C4E0D2 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 365B8A332E1D189B00C4E0D2 /* RealmSwift */; };
 		36B319052E1CAD8E00B57DCE /* XLPagerTabStrip in Frameworks */ = {isa = PBXBuildFile; productRef = 36B319042E1CAD8E00B57DCE /* XLPagerTabStrip */; };
 		36B319082E1CAEDF00B57DCE /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 36B319072E1CAEDF00B57DCE /* Kingfisher */; };
-		36B319132E1CB0F800B57DCE /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 36B319122E1CB0F800B57DCE /* Alamofire */; };
 		36B319182E1CB25900B57DCE /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 36B319172E1CB25900B57DCE /* RxSwift */; };
 		36B3195F2E1CCA1500B57DCE /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 36B3195E2E1CCA1500B57DCE /* RxCocoa */; };
+		36E524D12E1E613E00803F7E /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 36E524D02E1E613E00803F7E /* Alamofire */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,8 +47,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				365B8A342E1D189B00C4E0D2 /* RealmSwift in Frameworks */,
+				36E524D12E1E613E00803F7E /* Alamofire in Frameworks */,
 				365B89D42E1D060200C4E0D2 /* MBProgressHUD in Frameworks */,
-				36B319132E1CB0F800B57DCE /* Alamofire in Frameworks */,
 				36B319182E1CB25900B57DCE /* RxSwift in Frameworks */,
 				36B3195F2E1CCA1500B57DCE /* RxCocoa in Frameworks */,
 				36B319082E1CAEDF00B57DCE /* Kingfisher in Frameworks */,
@@ -105,11 +105,11 @@
 			packageProductDependencies = (
 				36B319042E1CAD8E00B57DCE /* XLPagerTabStrip */,
 				36B319072E1CAEDF00B57DCE /* Kingfisher */,
-				36B319122E1CB0F800B57DCE /* Alamofire */,
 				36B319172E1CB25900B57DCE /* RxSwift */,
 				36B3195E2E1CCA1500B57DCE /* RxCocoa */,
 				365B89D32E1D060200C4E0D2 /* MBProgressHUD */,
 				365B8A332E1D189B00C4E0D2 /* RealmSwift */,
+				36E524D02E1E613E00803F7E /* Alamofire */,
 			);
 			productName = Pokemon;
 			productReference = 36B318EB2E1CA87900B57DCE /* Pokemon.app */;
@@ -143,9 +143,9 @@
 				36B319032E1CAD8E00B57DCE /* XCRemoteSwiftPackageReference "XLPagerTabStrip" */,
 				36B319062E1CAEDF00B57DCE /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				36B319102E1CB0E900B57DCE /* XCRemoteSwiftPackageReference "RxSwift" */,
-				36B319112E1CB0F800B57DCE /* XCRemoteSwiftPackageReference "Alamofire" */,
 				365B89D22E1D060200C4E0D2 /* XCRemoteSwiftPackageReference "MBProgressHUD" */,
 				365B8A302E1D189B00C4E0D2 /* XCRemoteSwiftPackageReference "realm-swift" */,
+				36E524CF2E1E613E00803F7E /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 36B318EC2E1CA87900B57DCE /* Products */;
@@ -190,8 +190,8 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -217,8 +217,8 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -415,7 +415,7 @@
 				minimumVersion = 6.9.0;
 			};
 		};
-		36B319112E1CB0F800B57DCE /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+		36E524CF2E1E613E00803F7E /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
 			requirement = {
@@ -446,11 +446,6 @@
 			package = 36B319062E1CAEDF00B57DCE /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
 		};
-		36B319122E1CB0F800B57DCE /* Alamofire */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 36B319112E1CB0F800B57DCE /* XCRemoteSwiftPackageReference "Alamofire" */;
-			productName = Alamofire;
-		};
 		36B319172E1CB25900B57DCE /* RxSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 36B319102E1CB0E900B57DCE /* XCRemoteSwiftPackageReference "RxSwift" */;
@@ -460,6 +455,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 36B319102E1CB0E900B57DCE /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxCocoa;
+		};
+		36E524D02E1E613E00803F7E /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36E524CF2E1E613E00803F7E /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

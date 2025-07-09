@@ -10,6 +10,8 @@ import UIKit
 extension UIColor {
     static var backgroundColor = UIColor(named: "BackgroundColor")
     static var textColor = UIColor(named: "TextColor")
+    static var cardColor = UIColor(named: "CardColor")
+    static var baseColor = UIColor.init(hexa: 0xD53B47)
     
     convenience init(hexa: Int, alpha: CGFloat = 1) {
         let mask = 0xFF

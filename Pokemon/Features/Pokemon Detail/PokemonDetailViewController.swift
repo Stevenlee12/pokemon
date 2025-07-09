@@ -21,4 +21,14 @@ final class PokemonDetailViewController: UIViewController {
         
         navigationItem.title = data?.name
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.setNavigationBarHidden(false, animated: true)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        navigationController?.setNavigationBarHidden(true, animated: true)
+    }
 }
