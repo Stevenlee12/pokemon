@@ -21,4 +21,16 @@ final class FetchPokemonUseCase: FetchPokemonUseCaseProtocol {
     func executeFetchPokemonDetail(id: String) -> PokemonDetailResult {
         repository.fetchPokemonDetail(id: id)
     }
+    
+    func executeFetchCachedPokemons() -> [PokemonModel] {
+        repository.fetchCachedPokemon()
+    }
+    
+    func executeSavePokemonToCache(_ pokemon: PokemonModel) {
+        repository.savePokemonToCache(pokemon)
+    }
+    
+    func executeGetFilteredPokemons(keyword: String) -> [PokemonModel] {
+        repository.getFilteredPokemons(keyword: keyword)
+    }
 }

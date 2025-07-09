@@ -21,6 +21,13 @@ final class RealmManager {
         let results = realm.objects(RealmPokemon.self)
         return results.map { RealmMapper.toModel($0) }
     }
+    
+    func searchPokemons(keyword: String) -> [PokemonModel] {
+        let results = realm.objects(RealmPokemon.self)
+            .filter("name CONTAINS[c] %@", keyword)
+
+        return results.map { RealmMapper.toModel($0) }
+    }
 
     func clearAll() {
         try? realm.write {

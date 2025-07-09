@@ -13,10 +13,13 @@ import RxCocoa
 final class HomeViewModel: ObservableObject {
     // Public observable result for binding to UI
     var pokemonResult = BehaviorRelay<Result<[PokemonModel]>?>(value: .loading)
+    var searchKeyword = BehaviorRelay<String>(value: "")
     
     // Private storage
-    private var pokemons: [PokemonModel] = []
-    private var cachedDetails: [String: PokemonModel] = [:]
+    private var pokemons = [PokemonModel]()
+    private var displayPokemons = [PokemonModel]()
+    private var filteredPokemons = [PokemonModel]()
+    
     private var fetchPokemonUseCase: FetchPokemonUseCaseProtocol
     private let disposeBag = DisposeBag()
     
@@ -25,11 +28,22 @@ final class HomeViewModel: ObservableObject {
     private let limit = 10
     private var isLoading = false
     private var allDataLoaded = false
+    private var totalCount = 999
     
-    private let realmManager = RealmManager()
+    private var isSearching = false
 
     init(fetchPokemonUseCase: FetchPokemonUseCaseProtocol) {
         self.fetchPokemonUseCase = fetchPokemonUseCase
+    }
+    
+    fileprivate func loadCachedPokemonsIfAvailable() {
+        let cached = fetchPokemonUseCase.executeFetchCachedPokemons()
+        
+        if !cached.isEmpty {
+            pokemons = cached
+            displayPokemons = cached
+            pokemonResult.accept(.success(displayPokemons))
+        }
     }
 
     func fetchPokemons() {
@@ -43,11 +57,7 @@ final class HomeViewModel: ObservableObject {
         isLoading = true
 
         if offset == 0 {
-            let cachedPokemons = realmManager.fetchAllPokemons()
-            if !cachedPokemons.isEmpty {
-                self.pokemons = cachedPokemons
-                self.pokemonResult.accept(.success(cachedPokemons))
-            }
+            loadCachedPokemonsIfAvailable()
         }
         
         fetchPokemonUseCase
@@ -58,6 +68,8 @@ final class HomeViewModel: ObservableObject {
                     self?.isLoading = false
                     return .just([])
                 }
+                
+                self.totalCount = listResponse.count
 
                 if results.isEmpty {
                     self.allDataLoaded = true
@@ -66,7 +78,9 @@ final class HomeViewModel: ObservableObject {
                 }
 
                 let detailObservables: [Observable<PokemonModel>] = results.map { summary in
-                    if let cached = self.cachedDetails[summary.name] {
+                    if let cached = self.fetchPokemonUseCase
+                        .executeFetchCachedPokemons()
+                        .first(where: { $0.name.lowercased() == summary.name.lowercased() }) {
                         return .just(cached)
                     }
 
@@ -80,7 +94,7 @@ final class HomeViewModel: ObservableObject {
                                 imageUrl: Sprite(url: detail.imageUrl?.url ?? ""),
                                 abilities: detail.abilities
                             )
-                            self.cachedDetails[summary.name] = model
+                            
                             return model
                         }
                         .asObservable()
@@ -96,19 +110,25 @@ final class HomeViewModel: ObservableObject {
                         self.allDataLoaded = true
                     }
 
-                    // save to realm and avoid duplicate items
-                    models.forEach {
-                       self.realmManager.savePokemon($0)
-                    }
-
                     let newItems = models.filter { newItem in
-                       !self.pokemons.contains(where: { $0.name == newItem.name })
+                        !self.pokemons.contains(where: { $0.name == newItem.name })
+                    }
+                    
+                    // save to realm and avoid duplicate items
+                    newItems.forEach {
+                        self.fetchPokemonUseCase.executeSavePokemonToCache($0)
                     }
 
-                    self.offset += self.limit
-                    self.pokemons.append(contentsOf: newItems)
-                    self.pokemonResult.accept(.success(self.pokemons))
-                    self.isLoading = false
+                    offset += limit
+                    
+                    pokemons.append(contentsOf: newItems)
+                    
+                    if !isSearching {
+                        displayPokemons.append(contentsOf: newItems)
+                        pokemonResult.accept(.success(displayPokemons))
+                    }
+                    
+                    isLoading = false
                 },
                 onError: { [weak self] error in
                     self?.isLoading = false
@@ -121,9 +141,7 @@ final class HomeViewModel: ObservableObject {
     /// Called from the view to trigger pagination
     func loadMoreIfNeeded(currentIndex: Int) {
         let thresholdIndex = pokemons.count - 1
-        if currentIndex >= thresholdIndex {
-//            offset += limit
-            print(offset, 123455)
+        if currentIndex >= thresholdIndex && pokemons.count != totalCount {
             fetchPokemons()
         }
     }
@@ -132,17 +150,30 @@ final class HomeViewModel: ObservableObject {
         pokemons = []
         offset = 0
         allDataLoaded = false
-        cachedDetails = [:]
         fetchPokemons()
     }
 
     func getSpecificPokemon(idx: Int) -> PokemonModel? {
-        guard idx < pokemons.count else { return nil }
-        return pokemons[idx]
+        guard idx < displayPokemons.count else { return nil }
+        return displayPokemons[idx]
     }
 
     func getPokemonsCount() -> Int {
-        return pokemons.count
+        return displayPokemons.count
+    }
+    
+    func searchPokemons(keyword: String) {
+        isSearching = !keyword.isEmpty
+        searchKeyword.accept(keyword)
+        
+        if isSearching {
+            filteredPokemons = fetchPokemonUseCase.executeGetFilteredPokemons(keyword: keyword.lowercased())
+            displayPokemons = filteredPokemons
+        } else {
+            displayPokemons = pokemons
+        }
+        
+        pokemonResult.accept(.success(displayPokemons))
     }
 
     fileprivate func extractPokemonID(from url: String) -> String? {

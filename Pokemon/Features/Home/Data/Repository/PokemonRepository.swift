@@ -12,6 +12,8 @@ import RxSwift
 final class PokemonRepository: PokemonRepositoryProtocol {
     private let networkManager: NetworkManagerProtocol
     
+    private let realmManager = RealmManager()
+    
     init(networkManager: NetworkManagerProtocol) {
         self.networkManager = networkManager
     }
@@ -26,5 +28,17 @@ final class PokemonRepository: PokemonRepositoryProtocol {
         let router = APIAction.getPokemonDetail(id: id)
         
         return networkManager.request(router: router, session: .default, type: PokemonModel.self)
+    }
+    
+    func fetchCachedPokemon() -> [PokemonModel] {
+        return realmManager.fetchAllPokemons()
+    }
+    
+    func savePokemonToCache(_ pokemon: PokemonModel) {
+        realmManager.savePokemon(pokemon)
+    }
+    
+    func getFilteredPokemons(keyword: String) -> [PokemonModel] {
+        return realmManager.searchPokemons(keyword: keyword)
     }
 }
